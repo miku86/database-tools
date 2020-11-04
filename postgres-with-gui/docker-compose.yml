@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    env_file:
+      - docker.env
+    volumes:
+      - ${HOME}/docker-data/postgres/:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: on-failure
+
+  pgadmin:
+    image: dpage/pgadmin4:4
+    container_name: pgadmin
+    env_file:
+      - docker.env
+    volumes:
+      - ${HOME}/docker-data/pgadmin/:/root/.pgadmin
+    ports:
+      - "80:80"
+    networks:
+      - postgres
+    restart: on-failure
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+
+networks:
+  postgres:
+    driver: bridge
