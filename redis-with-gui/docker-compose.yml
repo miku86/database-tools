@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  redis:
+    image: redis:6
+    container_name: redis
+    hostname: redis
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    hostname: redis-commander
+    env_file:
+      - docker.env
+    ports:
+      - "8081:8081"
+    restart: on-failure
